@@ -1,0 +1,440 @@
+Perform the following operations using Python on dataset 
+Salary_Data.csv (Experience, Salary)
+1. Print all data from Salary_Data.csv
+2. Find the empty cell from Salary_Data.csv
+3. Count the missing values from column Experience
+4. List the Descriptive Statistics for given dataset
+5. Reset the default index of given dataset
+
+ANS:- 
+df = pd.read_csv('https://github.com/krishnaik06/simple-Linear-Regression/raw/master/Salary_Data.csv')
+df
+df.isnull().sum().sum()
+missing_experience_count = df["Experience"].isnull().sum()
+print("Missing values count in the 'Experience' column:", missing_experience_count)
+df.describe()
+df.reset_index(inplace = False,col_fill=10)
+
+#############################################################################################################
+
+
+Create a Data Frame Product (Product_Name, Price) with some 
+missing values and perform following operation on it.
+1. Count missing values under the column Product_Name.
+2. Count missing values under the entire data frame Product.
+3. Count missing values under the entire row.
+4. Count missing values across the row with index of 7.
+5. To remove the duplicates across the columns of Product_Name
+
+ANS :-
+
+import pandas as pd
+data = {'product_name': ['A', 'B', 'C', None, 'E', 'F','G'],
+        'price': [10, 20, None, 30, None, 50,90]}
+product = pd.DataFrame(data)
+product_name_missing_count = product['product_name'].isnull().sum()
+total_missing_count = product.isnull().sum().sum()
+row_missing_count = product.isnull().sum(axis=1)
+row_index = 6
+row7_missing_count = product.iloc[row_index].isnull().sum()
+product['product_name'] = product['product_name'].drop_duplicates()
+
+
+#############################################################################################################
+
+
+Create a Pandas Data frame with two columns (Value1 and Value2) 
+with some Numeric and some Categorical values and perform 
+following operation on it.
+1. Convert all values from data frame into float format and print it.
+2. Drop all the rows with the NaN values from data frame.
+3. Replace the NaN values with 0’s
+4. Transpose the given data frame.
+5. Rename the default index with X, Y, Z and then transpose data frame
+
+ANS :- 
+import pandas as pd
+import numpy as np
+dataframe2=pd.DataFrame({'value':[30,40,50,60,70,80],'value2':['maggi','maggi',np.nan,'noodle','noodle','noodle']})
+dataframe2
+dataframe2.replace(to_replace=['maggi','noodle'],value=[0,1])
+dataframe2.replace(to_replace=['maggi','noodle'],value=[0,1])
+dataframe2.replace(to_replace=np.nan,value=0)
+dataframe2.dropna()
+dataframe2.transpose()
+dataframe2.rename(index={0:'x',1:'Y',2:'Z',3:'W',4:'V',5:'C'}).transpose().transpose()
+
+
+
+
+
+
+
+
+
+
+###############################################################################################################
+
+Perform following operation on Iris data set.
+1. Standard Scaler and Minimax Scaler operation on Iris Data set.
+2. Scale data with range 5 to 10 using Minimax Scaler operation on 
+Iris Data set.
+3. Write a Python code for outlier detection using Z score
+
+ANS :- 
+from sklearn import datasets
+import pandas as pd
+dataset1 = datasets.load_iris()
+dataset1
+df = pd.DataFrame(dataset1.data,columns=dataset1.feature_names)
+df
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+sacled_data = scaler.fit_transform(df)
+print(sacled_data)
+df2=pd.DataFrame(sacled_data,columns=dataset1.feature_names)
+data_set = MinMaxScaler(feature_range=(5,10))
+data_set1 = data_set.fit_transform(df)
+pd.DataFrame(data_set1,columns=dataset1.feature_names)
+import numpy as np
+mean1 = np.mean(df)
+std1 = np.std(df)
+std1
+import pandas as pd
+threshold = 3
+outliers = []
+mean1 = df.mean() # Calculate the mean of the DataFrame
+std1 = df.std() # Calculate the standard deviation of the DataFrame
+for i in df:
+    z = (df[i] - mean1[i]) / std1[i] # Calculate the z-score for each value in the column
+    if (z > threshold).any():
+         outliers.extend(df[i][z > threshold]) # Append the outlier values to the outliers list
+print('Outliers in the dataset are:', outliers)
+
+
+####################################################################################################################
+
+1. Perform following operation on mtcars.csv data set.
+1. Display all descriptive statistic of mtcars data set.
+2. Get the Mean, Median and Mode of each column for mtcars 
+data set.
+3. Get the Mean of each rows for mtcars data set.
+
+ANS :-
+
+import pandas as pd
+from scipy import stats
+
+# Load the mtcars dataset
+data = pd.read_csv("https://gist.github.com/seankross/a412dfbd88b3db70b74b/raw/5f23f993cd87c283ce766e7ac6b329ee7cc2e1d1/mtcars.csv")
+
+# 1. Display all descriptive statistics of mtcars dataset
+descriptive_stats = data.describe()
+print("Descriptive Statistics of mtcars dataset:")
+print(descriptive_stats)
+print()
+
+# 2. Get the Mean, Median, and Mode of each column for mtcars dataset
+column_stats = pd.DataFrame({'Mean': data.mean(), 'Median': data.median()})
+column_stats['Mode'] = data.mode().iloc[0]
+print("Mean, Median, and Mode of each column for mtcars dataset:")
+print(column_stats)
+print()
+
+# 3. Get the Mean of each row for mtcars dataset
+row_means = data.mean(axis=1)
+print("Mean of each row for mtcars dataset:")
+print(row_means)
+
+
+########################################################################################################################
+
+Write a Python program to display some basic statistical details 
+like standard deviation, mean, standard deviation etc. of the species 
+of ‘Iris-setosa’, ‘Iris-versicolor’ and ‘Iris- versicolor’ of iris.csv dataset.
+
+ANS :-
+
+from sklearn import datasets
+data_frame3= datasets.load_iris()
+data_frame3
+import pandas as pd
+data1= pd.DataFrame(data_frame3.data,columns= data_frame3.feature_names)
+data1
+species_list = data_frame3['target_names'].tolist()
+import pandas as pd
+# Load the iris dataset
+iris_data = pd.read_csv('https://gist.github.com/netj/8836201/raw/6f9306ad21398ea43cba4f7d537619d0e07d5ae3/iris.csv')
+# Filter rows for each species
+setosa_data = iris_data[iris_data['variety'] == 'Setosa']
+versicolor_data = iris_data[iris_data['variety'] == 'Versicolor']
+virginica_data = iris_data[iris_data['variety'] == 'Virginica']
+# Calculate basic statistical details
+setosa_stats = setosa_data.describe()
+versicolor_stats = versicolor_data.describe()
+virginica_stats = virginica_data.describe()
+# Display the statistical details
+print("Statistical details for Iris-setosa:")
+print(setosa_stats)
+print("\nStatistical details for Iris-versicolor:")
+print(versicolor_stats)
+print("\nStatistical details for Iris-virginica:")
+print(virginica_stats)
+
+
+###########################################################################################################################
+
+Create a Linear Regression Model using Python to predict home prices using Boston Housing Dataset.
+
+ANS :-
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+from sklearn.datasets import fetch_openml
+boston = fetch_openml(name='boston', version=1)
+dataset11= pd.DataFrame(boston.data,columns=boston.feature_names)
+dataset11['PRICE'] = boston.target
+X= dataset11.drop('PRICE',axis=1)
+y=dataset11['PRICE']
+X_train,X_test,y_train,y_test= train_test_split(X,y,test_size=0.2,random_state=42)
+model = LinearRegression()
+model.fit(X_train,y_train)
+X_test=X_test.astype('float')
+y_pred=model.predict(X_test)
+mse= mean_squared_error(y_test,y_pred)
+mse
+import matplotlib.pyplot as plt
+plt.scatter(y_test,y_pred)
+
+###########################################################################################################################
+1. Implement logistic regression using Python to perform classification on Social_Network_Ads.csv dataset.
+2. Compute Confusion matrix to find TP, FP, TN, FN, Accuracy, Error rate, Precision, Recall on the given dataset.
+
+ANS:-
+
+import pandas as pd
+Social = pd.read_csv('Social_Network_Ads.csv')
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score,precision_score,recall_score
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression()
+data_encoding = pd.get_dummies(Social,columns=['Gender'],drop_first=True)
+X = Social.iloc[:,[2,3]]
+y= Social['Purchased']
+X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=42)
+Logistic_model = model.fit(X_train,y_train)
+y_pred = model.predict(X_test)
+a = accuracy_score(y_test,y_pred)
+b= precision_score(y_test,y_pred)
+b
+cm = confusion_matrix(y_test,y_pred)
+tp,tn,fp,fn = cm.ravel()
+error_rate = 1-accuracy
+error_rate
+
+
+############################################################################################################################
+
+1. Implement Simple Naïve Bayes classification algorithm using Python on iris.csv dataset.
+2. Compute Confusion matrix to find TP, FP, TN, FN, Accuracy, Error rate, Precision, Recall on the given dataset.
+
+ANS :- 
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+
+# Load the iris dataset
+data = pd.read_csv('iris.csv')
+
+# Split the dataset into features and target variable
+X = data.iloc[:, :-1]
+y = data.iloc[:, -1]
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a Naïve Bayes classifier
+model = GaussianNB()
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Make predictions on the testing set
+y_pred = model.predict(X_test)
+
+# Compute the confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# Extract the confusion matrix values
+TN = cm[0, 0]
+FP = cm[0, 1]
+FN = cm[1, 0]
+TP = cm[1, 1]
+
+# Compute the evaluation metrics
+accuracy = accuracy_score(y_test, y_pred)
+error_rate = 1 - accuracy
+precision = precision_score(y_test, y_pred, average='weighted')
+recall = recall_score(y_test, y_pred, average='weighted')
+f1 = f1_score(y_test, y_pred, average='weighted')
+
+# Print the results
+print("Confusion Matrix:")
+print(cm)
+print("True Positives (TP):", TP)
+print("False Positives (FP):", FP)
+print("True Negatives (TN):", TN)
+print("False Negatives (FN):", FN)
+print("Accuracy:", accuracy)
+print("Error Rate:", error_rate)
+print("Precision:", precision)
+print("Recall:", recall)
+print("F1 Score:", f1)
+
+
+
+################################################################################################################33
+
+1. Extract Sample document and apply following document 
+preprocessing methods:
+ Tokenization, 
+ POS Tagging, 
+ stop words removal, 
+ Stemming and 
+ Lemmatization.
+
+
+ANS :-
+
+import nltk
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('stopwords')
+nltk.download('wordnet')
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer,WordNetLemmatizer
+from nltk.tokenize import word_tokenize
+document = """
+Natural language processing (NLP) is a subfield of artificial intelligence (AI)
+that focuses on the interaction between computers and humans through natural language.
+"""
+tokens = word_tokenize(document)
+pos_tags = nltk.pos_tag(tokens)
+stop_words=set(stopwords.words('english'))
+filtered_tokens =[token for token in tokens if token.lower() not in stop_words]
+stemmer = PorterStemmer()
+stemmed_tokens = [stemmer.stem(token) for token in filtered_tokens]
+lemmatizer = WordNetLemmatizer()
+lemmatized_tokens =[lemmatizer.lemmatize(token) for token in filtered_tokens]
+print("Tokenization:")
+print(tokens)
+print("\nPOS Tagging:")
+print(pos_tags)
+print("\nStop Words Removal:")
+print(filtered_tokens)
+print("\nStemming:")
+print(stemmed_tokens)
+print("\nLemmatization:")
+print(lemmatized_tokens)
+
+
+. Create representation of document by calculating Term 
+Frequency and Inverse Document Frequency.
+
+ANS :- 
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+documents = [
+"Natural language processing (NLP) is a subfield of artificial intelligence (AI)",
+"NLP focuses on the interaction between computers and humans through natural language",
+"TF-IDF is commonly used in information retrieval and text mining tasks"
+]
+vectorizer = TfidfVectorizer()
+tfidf_matrix = vectorizer.fit_transform(documents)
+feature_name = vectorizer.get_feature_names_out()
+# Print TF-IDF representation
+for i, doc in enumerate(documents):
+    print(f"Document {i+1}:")
+    for j, term in enumerate(feature_name):
+        tfidf_score = tfidf_matrix[i, j]
+        if tfidf_score > 0:
+               print(f" {term}: {tfidf_score:.4f}")
+
+
+
+###############################################################################################################
+
+
+Use the inbuilt dataset 'titanic', contains information about the passengers who boarded the unfortunate Titanic ship. 
+
+ Write a code to check how the price of the ticket (column name: 'fare') for each passenger is distributed by plotting a histogram 
+with and without kernel density estimation
+
+ANS :-
+
+import seaborn as sns
+
+# Load the Titanic dataset from seaborn
+titanic_data = sns.load_dataset('titanic')
+
+# Plot histogram with kernel density estimation
+sns.histplot(data=titanic_data, x='fare', kde=True)
+plt.title("Ticket Price Distribution with Kernel Density Estimation")
+plt.xlabel("Fare")
+plt.ylabel("Count")
+plt.show()
+
+# Plot histogram without kernel density estimation
+sns.histplot(data=titanic_data, x='fare', kde=False)
+plt.title("Ticket Price Distribution without Kernel Density Estimation")
+plt.xlabel("Fare")
+plt.ylabel("Count")
+plt.show()
+
+####################################################################################################################
+
+Use the inbuilt dataset 'titanic' and Plot a box plot for distribution of age with respect to each gender along with the information about whether they survived or not. (Column names: 'sex' and 'age')
+
+ANS :-
+
+import seaborn as sns
+
+# Load the Titanic dataset from seaborn
+titanic_data = sns.load_dataset('titanic')
+
+# Plot box plot
+sns.boxplot(data=titanic_data, x='sex', y='age', hue='survived')
+plt.title("Distribution of Age with Respect to Gender and Survival")
+plt.xlabel("Gender")
+plt.ylabel("Age")
+plt.show()
+
+
+####################################################################################################################
+
+
+Perform following operation on Iris.csv data set.
+1. List down the features and their types (e.g., numeric, nominal) 
+available in the dataset.
+2. Create a histogram for each feature in the dataset to illustrate 
+the feature distributions.
+3. Create a box plot for each feature in the dataset.
+4. Compare distributions and identify outliers.
+
+ANS :-
+import pandas as pd
+data=pd.read_csv('iris.csv')
+data
+data.columns
+data.hist()
+import seaborn as sns
+sns.boxplot(data=data)
+
+
+
+
+
